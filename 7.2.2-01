@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # フロントエンドコンテナ
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api-gateway
+    environment:
+      - REACT_APP_API_URL=http://localhost:4000
+    networks:
+      - todo-network
+
+  # APIゲートウェイコンテナ
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - user-service
+      - todo-service
+      - notification-service
+    environment:
+      - USER_SERVICE_URL=http://user-service:3001
+      - TODO_SERVICE_URL=http://todo-service:3002
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3003
+    networks:
+      - todo-network
+
+  # ユーザーサービスコンテナ
+  user-service:
+    build: ./user-service
+    environment:
+      - PORT=3001
+      - MONGO_URL=mongodb://user-db:27017/users
+    depends_on:
+      - user-db
+    networks:
+      - todo-network
+
+  # ToDoサービスコンテナ
+  todo-service:
+    build: ./todo-service
+    environment:
+      - PORT=3002
+      - MONGO_URL=mongodb://todo-db:27017/todos
+    depends_on:
+      - todo-db
+    networks:
+      - todo-network
+
+  # 通知サービスコンテナ
+  notification-service:
+    build: ./notification-service
+    environment:
+      - PORT=3003
+      - REDIS_URL=redis://message-queue:6379
+    depends_on:
+      - message-queue
+    networks:
+      - todo-network
+
+  # ユーザーサービス用データベース
+  user-db:
+    image: mongo:5
+    volumes:
+      - user-data:/data/db
+    networks:
+      - todo-network
+
+  # ToDoサービス用データベース
+  todo-db:
+    image: mongo:5
+    volumes:
+      - todo-data:/data/db
+    networks:
+      - todo-network
+
+  # メッセージキュー
+  message-queue:
+    image: redis:7-alpine
+    networks:
+      - todo-network
+
+networks:
+  todo-network:
+    driver: bridge
+
+volumes:
+  user-data:
+  todo-data:
