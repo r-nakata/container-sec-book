@@ -1,0 +1,8 @@
+# 3.06 システムログによるDockerのログ確認
+# 『コンテナセキュリティ』サンプルコード
+
+# Dockerデーモンのログ確認
+journalctl -u docker.service
+
+# システム全体のログ確認
+journalctl -f

@@ -1,0 +1,21 @@
+# 5.33 noneネットワークの使用例
+# 『コンテナセキュリティ』サンプルコード
+
+# 完全に分離されたバッチ処理
+docker run --network=none \
+  -v /data/input:/input:ro \
+  -v /data/output:/output \
+  --read-only \
+  --tmpfs /tmp:size=100m,noexec,nosuid \
+  --memory=512m \
+  --cpus="1.0" \
+  --user=1000:1000 \
+  batch-processor
+
+# 機密データ処理
+docker run --network=none \
+  -v /sensitive:/data:ro \
+  --read-only \
+  --security-opt=no-new-privileges \
+  --cap-drop=ALL \
+  data-processor

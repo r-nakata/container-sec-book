@@ -1,0 +1,15 @@
+# 5.25 帯域制限の効果確認と統計表示
+# 『コンテナセキュリティ』サンプルコード
+
+# 基本的な統計表示
+docker exec myapp tc -s qdisc show
+
+# 実行結果例：
+# qdisc tbf 8001: dev eth0 root refcnt 2 rate 1Mbit burst 32Kb lat 400.0ms
+# Sent 524288 bytes 1024 pkt (dropped 0, overlimits 15 requeues 0)
+
+# より詳細な統計情報
+docker exec myapp tc -s -d qdisc show dev eth0
+
+# フィルター設定の確認（設定している場合）
+docker exec myapp tc filter show dev eth0

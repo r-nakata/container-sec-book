@@ -1,0 +1,20 @@
+# 6.11 リソースの削除
+# 『コンテナセキュリティ』サンプルコード
+
+# 特定のPodを削除
+kubectl delete pod nginx-deployment-7d64c5f5b-xk9zm
+
+# Deploymentを削除（関連するPodも自動的に削除される）
+kubectl delete deployment nginx-deployment
+
+# Serviceを削除
+kubectl delete service nginx-service
+
+# YAMLファイルで定義されたリソースをすべて削除
+kubectl delete -f nginx-deployment.yaml
+
+# ラベルで指定して削除
+kubectl delete pods -l app=nginx
+
+# 特定のネームスペースのすべてのリソースを削除
+kubectl delete all --all -n test-namespace

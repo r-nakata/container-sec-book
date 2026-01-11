@@ -1,0 +1,18 @@
+# 4.04 マニフェストファイルの例（manifest.json）
+# 『コンテナセキュリティ』サンプルコード
+
+{
+  "schemaVersion": 2,
+  "config": {
+    "mediaType": "application/vnd.oci.image.config.v1+json",
+    "digest": "sha256:...",    // コンフィギュレーションファイルのハッシュ
+    "size": 123                // ファイルサイズ
+  },
+  "layers": [
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:...",  // レイヤーファイルのハッシュ
+      "size": 456              // ファイルサイズ
+    }
+  ]
+}

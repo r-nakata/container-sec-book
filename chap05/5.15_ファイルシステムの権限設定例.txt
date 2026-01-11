@@ -1,0 +1,7 @@
+# 5.15 ファイルシステムの権限設定例
+# 『コンテナセキュリティ』サンプルコード
+
+docker run --read-only \
+  --tmpfs /tmp:size=100m,noexec,nosuid \
+  --tmpfs /var/run:size=50m,noexec,nosuid \
+  nginx

@@ -1,0 +1,14 @@
+# 8.10 etcdの保存時暗号化設定
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+    - secrets
+    providers:
+    - aescbc:
+        keys:
+        - name: key1
+          secret: <BASE64エンコードされた暗号化キー>
+    - identity: {}

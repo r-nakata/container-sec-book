@@ -1,0 +1,17 @@
+# 3.20 tcpdumpの活用例
+# 『コンテナセキュリティ』サンプルコード
+
+# コンテナ内での基本的なパケットキャプチャ
+docker exec -it web-container tcpdump -i eth0
+
+# 特定ポートの通信を監視
+docker exec -it web-container tcpdump -i eth0 port 80
+
+# HTTPトラフィックの詳細表示
+docker exec -it web-container tcpdump -i eth0 -A port 80
+
+# ファイルに保存（Wireshark用）
+docker exec -it web-container tcpdump -i eth0 -w /tmp/capture.pcap
+
+# ホスト側でDockerブリッジを監視
+tcpdump -i docker0 host 172.17.0.1

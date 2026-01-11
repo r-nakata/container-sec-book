@@ -1,0 +1,15 @@
+# 2.06 Docker Engineの管理
+# 『コンテナセキュリティ』サンプルコード
+
+# 起動
+sudo systemctl start docker
+# 終了
+sudo systemctl stop docker
+# 再起動
+sudo systemctl restart docker
+# 自動起動設定
+sudo systemctl enable docker
+# 自動起動無効化
+sudo systemctl disable docker
+# 設定状況の確認
+sudo systemctl is-enabled docker

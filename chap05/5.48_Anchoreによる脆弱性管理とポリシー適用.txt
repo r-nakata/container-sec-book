@@ -1,0 +1,60 @@
+# 5.48 Anchoreによる脆弱性管理とポリシー適用
+# 『コンテナセキュリティ』サンプルコード
+
+# Anchore Engine PostgreSQLデータベースの起動
+docker run -d --name anchore-db \
+  -e POSTGRES_PASSWORD=mypassword \
+  postgres:13
+
+# Anchore Engineの起動
+docker run -d --name anchore-engine \
+  --link anchore-db:anchore-db \
+  -e ANCHORE_DB_PASSWORD=mypassword \
+  -e ANCHORE_DB_USER=postgres \
+  -e ANCHORE_DB_HOST=anchore-db \
+  -p 8228:8228 \
+  anchore/anchore-engine:latest
+
+# Anchore CLIのインストールと設定
+pip install anchorecli
+export ANCHORE_CLI_URL=http://localhost:8228/v1
+export ANCHORE_CLI_USER=admin
+export ANCHORE_CLI_PASS=foobar
+
+# イメージの登録と分析
+anchore-cli image add nginx:latest
+anchore-cli image wait nginx:latest
+anchore-cli image vuln nginx:latest all
+anchore-cli image policy nginx:latest
+
+# コンプライアンスポリシーの定義
+cat > compliance_policy.json << 'EOF'
+{
+  "name": "compliance_policy",
+  "version": "1.0",
+  "rules": [
+    {
+      "gate": "vulnerabilities",
+      "trigger": "package",
+      "action": "stop",
+      "params": [
+        {"name": "severity_comparison", "value": ">="},
+        {"name": "severity", "value": "high"}
+      ]
+    },
+    {
+      "gate": "dockerfile",
+      "trigger": "instruction",
+      "action": "warn",
+      "params": [
+        {"name": "instruction", "value": "USER"},
+        {"name": "check", "value": "not_exists"}
+      ]
+    }
+  ]
+}
+EOF
+
+# ポリシーの登録と評価
+anchore-cli policy add compliance_policy.json
+anchore-cli evaluate check nginx:latest --detail

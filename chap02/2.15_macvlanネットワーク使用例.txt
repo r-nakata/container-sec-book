@@ -1,0 +1,8 @@
+# 2.15 macvlanネットワーク使用例
+# 『コンテナセキュリティ』サンプルコード
+
+# macvlanネットワークの作成
+docker network create -d macvlan --subnet=192.168.1.0/24 --gateway=192.168.0.254 --ip-range=192.168.1.1/25 -o parent=eth0 macvlan1
+
+# VLAN対応の設定（VLAN ID=10の場合）
+docker network create -d macvlan --subnet=192.168.1.0/24 -o parent=eth0.10 macvlan1

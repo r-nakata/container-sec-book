@@ -1,0 +1,40 @@
+# 5.47 OpenSCAPによるセキュリティ監査
+# 『コンテナセキュリティ』サンプルコード
+
+# OpenSCAPのインストール
+apt-get update && apt-get install -y libopenscap8 openscap-utils
+
+# CIS Benchmarkコンテンツのダウンロード
+wget https://github.com/ComplianceAsCode/content/releases/latest/download/scap-security-guide.tar.bz2
+tar -xjf scap-security-guide.tar.bz2
+
+# CIS Level 1基準でのホストOSスキャン
+oscap xccdf eval --profile cis_level1_server \
+  --results host_cis_results.xml \
+  --report host_cis_report.html \
+  scap-security-guide/ssg-ubuntu2004-ds.xml
+
+# Dockerfileセキュリティプロファイルの作成
+cat > dockerfile_profile.xml << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<xccdf:Benchmark xmlns:xccdf="http://checklists.nist.gov/xccdf/1.2">
+  <xccdf:Profile id="docker_security">
+    <xccdf:title>Docker Container Security Profile</xccdf:title>
+    <xccdf:Rule>
+      <xccdf:title>Avoid running containers as root</xccdf:title>
+      <xccdf:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+        <xccdf:check-content-ref href="docker_oval.xml"/>
+      </xccdf:check>
+    </xccdf:Rule>
+  </xccdf:Profile>
+</xccdf:Benchmark>
+EOF
+
+# コンテナイメージの脆弱性スキャン
+oscap-docker image-cve nginx:latest \
+  --results nginx_cve_results.xml \
+  --report nginx_cve_report.html
+
+# 定期スキャンの設定
+# /etc/cron.d/compliance_scan
+0 3 * * 0 root /usr/local/bin/weekly_compliance_scan.sh

@@ -1,0 +1,19 @@
+# 5.09 docker-compose.yml でのHarborを使用した高機能レジストリ構築例
+# 『コンテナセキュリティ』サンプルコード
+
+version: '3.8'
+services:
+  harbor-core:
+    image: goharbor/harbor-core:v2.8.0
+    environment:
+      - CORE_SECRET=your-secret-key
+      - HARBOR_ADMIN_PASSWORD=Harbor12345
+    ports:
+      - "80:8080"
+    volumes:
+      - harbor-config:/etc/harbor
+      - harbor-data:/data
+    
+volumes:
+  harbor-config:
+  harbor-data:

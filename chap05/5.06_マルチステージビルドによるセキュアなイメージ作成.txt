@@ -1,0 +1,19 @@
+# 5.06 マルチステージビルドによるセキュアなイメージ作成
+# 『コンテナセキュリティ』サンプルコード
+
+# ビルドステージ：フル機能イメージ
+FROM node:18 AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# 本番ステージ：軽量イメージ
+FROM node:18-alpine
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY --chown=nextjs:nodejs src/ ./src/
+USER nextjs
+EXPOSE 3000
+CMD ["node", "src/index.js"]

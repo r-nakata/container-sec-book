@@ -1,0 +1,13 @@
+# 5.26 Webアプリケーション向け実践例
+# 『コンテナセキュリティ』サンプルコード
+
+docker run \
+  --memory=1g --memory-swap=1g \
+  --cpus="1.0" \
+  --pids-limit=100 \
+  --ulimit nofile=2048:2048 \
+  --user=1000:1000 \
+  --cap-drop=ALL --cap-add=NET_BIND_SERVICE \
+  --log-opt max-size=20m \
+  --restart=unless-stopped \
+  webapp:latest

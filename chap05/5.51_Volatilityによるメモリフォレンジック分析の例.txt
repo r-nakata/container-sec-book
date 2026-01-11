@@ -1,0 +1,19 @@
+# 5.51 Volatilityによるメモリフォレンジック分析の例
+# 『コンテナセキュリティ』サンプルコード
+
+# メモリダンプの取得（ホストシステムから）
+dd if=/dev/mem of=memory_dump_$(date +%Y%m%d_%H%M%S).raw bs=1MB
+# または LiME (Linux Memory Extractor) を使用
+insmod lime.ko "path=memory_dump.raw format=raw"
+
+# Volatility 3を使用したコンテナ関連プロセス分析
+docker run --rm -v $(pwd)/evidence:/evidence volatilityfoundation/volatility3 -f /evidence/memory_dump.raw linux.pslist | grep -E "(docker|containerd|runc)"
+
+# ネットワーク接続の分析
+docker run --rm -v $(pwd)/evidence:/evidence volatilityfoundation/volatility3 -f /evidence/memory_dump.raw linux.netstat
+
+# プロセスツリーとコマンドライン引数の取得
+docker run --rm -v $(pwd)/evidence:/evidence volatilityfoundation/volatility3 -f /evidence/memory_dump.raw linux.pstree
+
+# 開いているファイルの調査
+docker run --rm -v $(pwd)/evidence:/evidence volatilityfoundation/volatility3 -f /evidence/memory_dump.raw linux.lsof > open_files_analysis.txt

@@ -1,0 +1,8 @@
+# 2.17 noneネットワーク使用例
+# 『コンテナセキュリティ』サンプルコード
+
+# バッチ処理の例
+docker run --network=none -v /data/input:/input:ro -v /data/output:/output batch-processor
+
+# 機密データ処理の例
+docker run --network=none -v /sensitive:/data:ro --read-only security-scanner

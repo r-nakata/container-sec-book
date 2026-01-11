@@ -1,0 +1,6 @@
+# 3.04 Dockerfileでのログリダイレクト設定例
+# 『コンテナセキュリティ』サンプルコード
+
+# Nginxの例：ログを標準出力にリダイレクト
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log

@@ -1,0 +1,8 @@
+# 5.20 OOM Killer制御
+# 『コンテナセキュリティ』サンプルコード
+
+# OOM Killerによる強制終了を無効化（要root権限）
+docker run --memory=512m --oom-kill-disable myapp
+
+# OOMスコア調整（-1000〜1000、低いほど強制終了されにくい）
+docker run --oom-score-adj=-500 myapp

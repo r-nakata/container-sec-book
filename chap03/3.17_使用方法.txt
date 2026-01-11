@@ -1,0 +1,17 @@
+# 3.17 使用方法
+# 『コンテナセキュリティ』サンプルコード
+
+# 通常の運用
+docker compose up -d
+
+# 問題発生時：デバッグ環境を起動
+docker compose --profile debug up -d web-debug
+
+# デバッグコンテナに接続
+docker compose exec web-debug /bin/bash
+
+# コンテナ内でのデバッグ作業
+htop                    # プロセス監視
+tcpdump -i eth0         # ネットワーク監視
+strace -p 1             # システムコール追跡
+tail -f /app/logs/app.log  # ログ監視

@@ -1,0 +1,14 @@
+# 5.27 データベースサーバー向け実践例
+# 『コンテナセキュリティ』サンプルコード
+
+docker run \
+  --memory=4g --memory-reservation=2g \
+  --cpus="2.0" --cpuset-cpus="0-1" \
+  --pids-limit=500 \
+  --ulimit nofile=65536:65536 \
+  --device-read-iops /dev/sda:2000 \
+  --device-write-iops /dev/sda:1000 \
+  --user=999:999 \
+  --volume /data/mysql:/var/lib/mysql \
+  --restart=unless-stopped \
+  database:latest

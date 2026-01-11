@@ -1,0 +1,16 @@
+# 8.27 レート制限とコネクション制限の設定
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: protected-api
+  annotations:
+    # 1秒あたりのリクエスト数制限
+    nginx.ingress.kubernetes.io/limit-rps: "10"
+    # 同時接続数の制限
+    nginx.ingress.kubernetes.io/limit-connections: "5"
+    # 制限超過時のレスポンスコード
+    nginx.ingress.kubernetes.io/limit-rate-after: "503"
+spec:
+  # ...

@@ -1,0 +1,8 @@
+# 6.03 リソースの継続監視
+# 『コンテナセキュリティ』サンプルコード
+
+# Podの状態をリアルタイムで監視
+kubectl get pods --watch
+
+# 短縮形を使った記述（podsをpoと省略可能）
+kubectl get po

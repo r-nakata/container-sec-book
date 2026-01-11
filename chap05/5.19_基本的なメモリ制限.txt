@@ -1,0 +1,8 @@
+# 5.19 基本的なメモリ制限
+# 『コンテナセキュリティ』サンプルコード
+
+# メモリ使用量を512MBに制限
+docker run --memory=512m myapp
+
+# スワップも含めた総メモリ制限（メモリ512MB + スワップ256MB）
+docker run --memory=512m --memory-swap=768m myapp

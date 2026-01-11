@@ -1,0 +1,5 @@
+# 4.09 LXDイメージの利用例
+# 『コンテナセキュリティ』サンプルコード
+
+lxc image list images:ubuntu/20.04
+lxc launch images:ubuntu/20.04 my-container

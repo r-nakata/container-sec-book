@@ -1,0 +1,8 @@
+# 3.14 マルチステージでのビルド方法
+# 『コンテナセキュリティ』サンプルコード
+
+# 本番用イメージのビルド
+docker build --target production -t my-app:prod .
+
+# デバッグ用イメージのビルド
+docker build --target debug -t my-app:debug .

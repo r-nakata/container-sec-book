@@ -1,0 +1,16 @@
+# 2.18 Docker Composeのバージョン確認とインストール
+# 『コンテナセキュリティ』サンプルコード
+
+#バージョン確認
+docker compose version
+
+#Docker Composeのインストール
+sudo apt update
+sudo apt install docker-compose-plugin
+
+# バージョン指定（v2.18.1の場合）
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# 動作確認
+docker compose --help

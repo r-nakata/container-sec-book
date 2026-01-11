@@ -1,0 +1,37 @@
+# 8.18 アプリケーション用サービスアカウントの設定
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: web-app
+  namespace: production
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: production
+  name: web-app-role
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  resourceNames: ["web-app-config"]
+  verbs: ["get", "watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  resourceNames: ["web-app-secrets"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: web-app-binding
+  namespace: production
+subjects:
+- kind: ServiceAccount
+  name: web-app
+  namespace: production
+roleRef:
+  kind: Role
+  name: web-app-role
+  apiGroup: rbac.authorization.k8s.io

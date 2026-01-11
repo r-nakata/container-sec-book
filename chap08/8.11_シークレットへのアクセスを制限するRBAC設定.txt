@@ -1,0 +1,27 @@
+# 8.11 シークレットへのアクセスを制限するRBAC設定
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: production
+  name: secret-reader
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  resourceNames: ["db-credentials"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-db-secrets
+  namespace: production
+subjects:
+- kind: ServiceAccount
+  name: web-app
+  namespace: production
+roleRef:
+  kind: Role
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io

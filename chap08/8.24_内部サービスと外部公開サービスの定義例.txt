@@ -1,0 +1,30 @@
+# 8.24 内部サービスと外部公開サービスの定義例
+# 『コンテナセキュリティ』サンプルコード
+
+# 内部専用サービス（ClusterIP - デフォルト）
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-database
+  namespace: production
+spec:
+  type: ClusterIP  # クラスター内部からのみアクセス可能
+  selector:
+    app: user-database
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+# 外部公開サービス（LoadBalancer）
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  namespace: production
+spec:
+  type: LoadBalancer  # 外部からアクセス可能
+  selector:
+    app: api-gateway
+  ports:
+  - port: 443
+    targetPort: 8443

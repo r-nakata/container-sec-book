@@ -1,0 +1,18 @@
+# 5.35 DockerでのTLS設定の基本
+# 『コンテナセキュリティ』サンプルコード
+
+# 自己署名証明書の作成
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /etc/docker/certs/docker.key \
+  -out /etc/docker/certs/docker.crt \
+  -subj "/CN=docker.example.com"
+
+# Dockerデーモンの設定
+# /etc/docker/daemon.json に以下を記述
+{
+  "tls": true,
+  "tlscacert": "/etc/docker/certs/ca.pem",
+  "tlscert": "/etc/docker/certs/server-cert.pem",
+  "tlskey": "/etc/docker/certs/server-key.pem",
+  "tlsverify": true
+}

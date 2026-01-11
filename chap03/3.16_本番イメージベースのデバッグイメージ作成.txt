@@ -1,0 +1,38 @@
+# 3.16 本番イメージベースのデバッグイメージ作成
+# 『コンテナセキュリティ』サンプルコード
+
+# debug.Dockerfile
+FROM my-app:prod AS debug-base
+
+# rootユーザーに変更（デバッグ用）
+USER root
+
+# デバッグツールをインストール
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    vim \
+    htop \
+    tcpdump \
+    strace \
+    lsof \
+    netstat \
+    dnsutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# 開発用Node.jsツールを追加
+RUN npm install -g \
+    nodemon \
+    pm2 \
+    clinic
+
+# デバッグ用の環境変数設定
+ENV NODE_ENV=development
+ENV LOG_LEVEL=debug
+ENV DEBUG=*
+
+# デバッガー用ポート公開
+EXPOSE 9229
+
+# デバッグモードで起動
+CMD ["node", "--inspect=0.0.0.0:9229", "server.js"]

@@ -1,0 +1,37 @@
+# 5.42 ログ監視の設定例
+# 『コンテナセキュリティ』サンプルコード
+
+# 基本的なDockerログ設定
+docker run --log-driver=json-file \
+  --log-opt max-size=50m \
+  --log-opt max-file=3 \
+  --log-opt labels=service,version \
+  nginx
+
+# Fluentdによる高度なログ収集設定
+# /etc/fluent/fluent.conf
+<source>
+  @type tail
+  path /var/lib/docker/containers/*/*-json.log
+  pos_file /var/log/fluentd-docker.pos
+  tag docker.*
+  read_from_head true
+  <parse>
+    @type json
+  </parse>
+</source>
+
+<filter docker.**>
+  @type record_transformer
+  <record>
+    hostname "#{Socket.gethostname}"
+    tag ${tag}
+  </record>
+</filter>
+
+<match docker.**>
+  @type elasticsearch
+  host elasticsearch
+  port 9200
+  logstash_format true
+</match>

@@ -1,0 +1,25 @@
+# 5.38 JWTを使ったAPI認証
+# 『コンテナセキュリティ』サンプルコード
+
+server {
+  listen 443 ssl http2;
+  server_name api.example.com;
+
+  # TLSプロトコルの設定（安全なバージョンのみ許可）
+  ssl_protocols TLSv1.2 TLSv1.3;
+  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
+  ssl_prefer_server_ciphers off;
+  ssl_session_tickets off;
+
+  # JWT認証の設定
+  location /api/ {
+    auth_jwt "API Service";
+    auth_jwt_key_file conf/jwt_key.pub;
+    proxy_pass http://backend;
+
+    # セキュリティヘッダーの追加
+    add_header Strict-Transport-Security "max-age=63072000" always;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+  }
+}

@@ -1,0 +1,11 @@
+# 4.06 イメージのコマンドラインでの検索
+# 『コンテナセキュリティ』サンプルコード
+
+# 基本的な検索
+docker search python
+
+# 検索結果の例：
+# NAME                 DESCRIPTION                     STARS     OFFICIAL   AUTOMATED
+# python               Python is an interpreted...     7000      [OK]       
+# pypy                 PyPy is a fast, compliant...    300       [OK]       
+# python/python        Official Python runtime...      200                  [OK]

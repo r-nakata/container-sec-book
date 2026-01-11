@@ -1,0 +1,8 @@
+# 2.16 ipvlanネットワーク使用例
+# 『コンテナセキュリティ』サンプルコード
+
+# ipvlanの設定
+docker network create -d ipvlan --subnet=192.168.2.0/24 --gateway=192.168.2.254 -o parent=eth0 ipvlan2
+
+# L3モード - ルーティングベースの通信
+docker network create -d ipvlan --subnet=192.168.2.0/24 -o parent=eth0 -o ipvlan_mode=l3 ipvlan2

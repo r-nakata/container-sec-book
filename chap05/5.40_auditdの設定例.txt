@@ -1,0 +1,33 @@
+# 5.40 auditdの設定例
+# 『コンテナセキュリティ』サンプルコード
+
+# auditdのインストールと有効化
+apt-get install auditd audispd-plugins
+systemctl enable auditd
+systemctl start auditd
+
+# Dockerコンテナ監視用auditルールの設定
+# /etc/audit/rules.d/docker.rules
+# Dockerデーモンの監視
+-w /usr/bin/docker -p rwxa -k docker_daemon
+-w /usr/bin/dockerd -p rwxa -k docker_daemon
+-w /usr/bin/containerd -p rwxa -k docker_daemon
+
+# Docker設定ファイルの監視
+-w /etc/docker/ -p rwxa -k docker_config
+-w /var/lib/docker/ -p rwxa -k docker_data
+
+# コンテナ実行の監視
+-a always,exit -F arch=b64 -S execve -F key=container_exec
+-a always,exit -F arch=b32 -S execve -F key=container_exec
+
+# 特権操作の監視
+-a always,exit -F arch=b64 -S setuid,setgid,setreuid,setregid -F key=privilege_escalation
+-a always,exit -F arch=b32 -S setuid,setgid,setreuid,setregid -F key=privilege_escalation
+
+# auditdサービスの再起動
+systemctl restart auditd
+
+# auditログの確認
+ausearch -k docker_daemon -ts recent
+ausearch -k container_exec -ts today

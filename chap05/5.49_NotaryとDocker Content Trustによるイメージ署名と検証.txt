@@ -1,0 +1,65 @@
+# 5.49 NotaryとDocker Content Trustによるイメージ署名と検証
+# 『コンテナセキュリティ』サンプルコード
+
+# Notaryサーバーのセットアップ (docker-compose.notary.yml)
+cat > docker-compose.notary.yml << 'EOF'
+version: '3.7'
+services:
+  notary-server:
+    image: notary:server-0.6.1
+    environment:
+      - NOTARY_SERVER_STORAGE_TYPE=mysql
+      - NOTARY_SERVER_MYSQL_URL=server@tcp(mysql:3306)/notaryserver
+    volumes:
+      - ./server-config.json:/etc/notary/server-config.json
+    ports:
+      - "4443:4443"
+
+  notary-signer:
+    image: notary:signer-0.6.1
+    environment:
+      - NOTARY_SIGNER_STORAGE_TYPE=mysql
+      - NOTARY_SIGNER_MYSQL_URL=signer@tcp(mysql:3306)/notarysigner
+    volumes:
+      - ./signer-config.json:/etc/notary/signer-config.json
+EOF
+
+docker-compose -f docker-compose.notary.yml up -d
+
+# Docker Content Trustの有効化
+export DOCKER_CONTENT_TRUST=1
+export DOCKER_CONTENT_TRUST_SERVER=https://notary.company.com:4443
+
+# 署名鍵の生成と署名者の登録
+docker trust key generate company-root
+docker trust signer add --key company-root.pub company-signer myregistry.com/myapp
+
+# イメージのビルドとプッシュ(自動的に署名される)
+docker build -t myregistry.com/myapp:v1.0 .
+docker push myregistry.com/myapp:v1.0
+
+# イメージの検証とプル
+docker trust inspect myregistry.com/myapp:v1.0
+docker pull myregistry.com/myapp:v1.0
+
+# 署名ポリシーファイルの設定
+cat > /etc/docker/policy.json << 'EOF'
+{
+  "default": [
+    {
+      "type": "reject"
+    }
+  ],
+  "transports": {
+    "docker": {
+      "myregistry.com": [
+        {
+          "type": "signedBy",
+          "keyType": "GPGKeys",
+          "keyPath": "/etc/docker/trust/company-root.pub"
+        }
+      ]
+    }
+  }
+}
+EOF

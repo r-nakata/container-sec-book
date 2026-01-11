@@ -1,0 +1,6 @@
+# 4.08 GitHub Container Registryの使用例
+# 『コンテナセキュリティ』サンプルコード
+
+echo \$GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+docker tag myapp:latest ghcr.io/username/myapp:latest
+docker push ghcr.io/username/myapp:latest

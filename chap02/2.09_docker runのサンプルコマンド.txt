@@ -1,0 +1,4 @@
+# 2.09 docker runのサンプルコマンド
+# 『コンテナセキュリティ』サンプルコード
+
+docker run -it -d --rm --name testcontainer -p 8080:80 -v /var/www/html:/html ubuntu:20.04 /bin/bash

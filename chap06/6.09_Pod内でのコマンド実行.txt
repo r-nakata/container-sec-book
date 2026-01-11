@@ -1,0 +1,14 @@
+# 6.09 Pod内でのコマンド実行
+# 『コンテナセキュリティ』サンプルコード
+
+# Pod内でシェルを起動（対話的に操作）
+kubectl exec -it nginx-deployment-7d64c5f5b-xk9zm -- /bin/bash
+
+# Pod内で単一のコマンドを実行
+kubectl exec nginx-deployment-7d64c5f5b-xk9zm -- ls /usr/share/nginx/html
+
+# 環境変数を確認
+kubectl exec nginx-deployment-7d64c5f5b-xk9zm -- env
+
+# 複数コンテナを含むPodの特定コンテナでコマンド実行
+kubectl exec -it nginx-deployment-7d64c5f5b-xk9zm -c nginx -- /bin/bash

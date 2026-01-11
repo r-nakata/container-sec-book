@@ -1,0 +1,43 @@
+# 3.08 必要なディレクトリとファイルの作成
+# 『コンテナセキュリティ』サンプルコード
+
+# ディレクトリ構造の作成
+mkdir -p logstash/{config,pipeline}
+
+# Logstashの基本設定
+cat << EOF > logstash/config/logstash.yml
+http.host: "0.0.0.0"
+path.config: /usr/share/logstash/pipeline
+xpack.monitoring.elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+EOF
+
+# Logstashパイプラインの設定
+cat << EOF > logstash/pipeline/logstash.conf
+input {
+  beats {
+    port => 5044
+  }
+  gelf {
+    port => 12201
+    type => docker
+  }
+}
+
+filter {
+  if [type] == "docker" {
+    mutate {
+      add_field => {
+        "container_name" => "%{[container][name]}"
+        "image_name" => "%{[container][image][name]}"
+      }
+    }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["elasticsearch:9200"]
+    index => "logstash-%{+YYYY.MM.dd}"
+  }
+}
+EOF

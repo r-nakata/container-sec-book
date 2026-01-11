@@ -1,0 +1,8 @@
+# 5.14 MACシステムの設定例
+# 『コンテナセキュリティ』サンプルコード
+
+# AppArmorプロファイルの適用
+docker run --security-opt apparmor=docker-default nginx
+
+# SELinuxコンテキストの設定
+docker run --security-opt label=level:s0:c100,c200 nginx

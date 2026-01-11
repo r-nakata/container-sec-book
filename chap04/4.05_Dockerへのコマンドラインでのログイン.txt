@@ -1,0 +1,8 @@
+# 4.05 Dockerへのコマンドラインでのログイン
+# 『コンテナセキュリティ』サンプルコード
+
+# ログイン
+docker login
+# Username: (ユーザー名を入力)
+# Password: (パスワードを入力)
+# Login Succeeded と表示されれば成功

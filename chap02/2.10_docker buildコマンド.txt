@@ -1,0 +1,4 @@
+# 2.10 docker buildコマンド
+# 『コンテナセキュリティ』サンプルコード
+
+docker build -t [イメージ名] [Dockerfileのパス]

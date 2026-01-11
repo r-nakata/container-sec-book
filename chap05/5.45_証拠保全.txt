@@ -1,0 +1,17 @@
+# 5.45 証拠保全
+# 『コンテナセキュリティ』サンプルコード
+
+# スナップショットとして現在の状態を保存（詳細分析が必要な場合）
+docker commit suspicious_container_id forensic_image:$(date +%Y%m%d_%H%M%S)
+
+# ファイルシステム全体をエクスポート（詳細分析が必要な場合）
+docker export suspicious_container_id > container_forensic_$(date +%Y%m%d_%H%M%S).tar
+
+# 現在実行中のプロセス一覧を記録（必須）
+docker exec suspicious_container_id ps aux > process_list.txt
+
+# ネットワーク接続状況を記録（必須）
+docker exec suspicious_container_id netstat -tulnp > network_connections.txt
+
+# コンテナのログを保存（必須）
+docker logs suspicious_container_id > container_logs.txt

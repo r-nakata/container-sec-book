@@ -1,0 +1,9 @@
+# 2.13 hostネットワーク使用例
+# 『コンテナセキュリティ』サンプルコード
+
+# hostネットワークでコンテナを起動
+docker run --network=host nginx
+
+# 複数のアプリケーションを異なるポートで実行
+docker run --network=host -e PORT=8080 webapp1
+docker run --network=host -e PORT=8081 webapp2

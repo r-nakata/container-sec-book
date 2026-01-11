@@ -1,0 +1,12 @@
+# 5.04 DCTの利用
+# 『コンテナセキュリティ』サンプルコード
+
+# Docker Content Trustを有効化
+export DOCKER_CONTENT_TRUST=1
+
+# 署名付きでイメージをプッシュ
+docker push myregistry/myapp:v1.0
+# 初回時は署名鍵の生成が行われる
+
+# 署名付きイメージのプル（検証も自動実行）
+docker pull myregistry/myapp:v1.0

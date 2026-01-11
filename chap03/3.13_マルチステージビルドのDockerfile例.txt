@@ -1,0 +1,39 @@
+# 3.13 マルチステージビルドのDockerfile例
+# 『コンテナセキュリティ』サンプルコード
+
+# Dockerfile
+FROM node:18-alpine AS base
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+# 本番用イメージ
+FROM base AS production
+COPY . .
+EXPOSE 3000
+USER node
+CMD ["npm", "start"]
+
+# デバッグ用イメージ
+FROM base AS debug
+# デバッグツールをインストール
+RUN apk add --no-cache \
+    curl \
+    tcpdump \
+    strace \
+    htop \
+    net-tools \
+    procps \
+    vim
+
+# 開発用パッケージを追加
+RUN npm install --only=development
+
+COPY . .
+# デバッグ用の設定ファイルをコピー
+COPY debug/debug-config.json ./config/
+
+# rootユーザーでデバッグツールにアクセス
+USER root
+EXPOSE 3000 9229
+CMD ["npm", "run", "debug"]

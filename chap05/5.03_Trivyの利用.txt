@@ -1,0 +1,9 @@
+# 5.03 Trivyの利用
+# 『コンテナセキュリティ』サンプルコード
+
+# Trivyによるイメージスキャン
+trivy image myapp:latest
+
+# CI/CDパイプラインでの統合
+docker build -t myapp:latest .
+trivy image --exit-code 1 --severity HIGH,CRITICAL myapp:latest

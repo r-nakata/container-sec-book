@@ -1,0 +1,30 @@
+# 7.02 .github/workflows/deploy.yml
+# 『コンテナセキュリティ』サンプルコード
+
+name: ビルドとデプロイ
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # コードの取得
+    - uses: actions/checkout@v3
+    
+    # Dockerイメージのビルド
+    - name: コンテナイメージをビルド
+      run: docker build -t todo-service:latest .
+    
+    # テストの実行
+    - name: テストを実行
+      run: docker run todo-service:latest npm test
+    
+    # イメージをレジストリにプッシュ
+    - name: イメージをプッシュ
+      run: |
+        docker tag todo-service:latest myregistry/todo-service:latest
+        docker push myregistry/todo-service:latest

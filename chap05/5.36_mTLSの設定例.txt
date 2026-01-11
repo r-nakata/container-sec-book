@@ -1,0 +1,17 @@
+# 5.36 mTLSの設定例
+# 『コンテナセキュリティ』サンプルコード
+
+# クライアント証明書の作成
+openssl genrsa -out client.key 4096
+openssl req -new -key client.key -out client.csr
+openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key \
+  -CAcreateserial -out client.crt -days 365
+
+# Nginx での相互TLS設定
+server {
+  listen 443 ssl;
+  ssl_certificate /etc/nginx/certs/server.crt;
+  ssl_certificate_key /etc/nginx/certs/server.key;
+  ssl_client_certificate /etc/nginx/certs/ca.crt;
+  ssl_verify_client on;
+}

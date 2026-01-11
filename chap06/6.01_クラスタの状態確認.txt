@@ -1,0 +1,11 @@
+# 6.01 クラスタの状態確認
+# 『コンテナセキュリティ』サンプルコード
+
+# クラスタ情報の確認
+kubectl cluster-info
+
+# ノードの状態確認
+kubectl get nodes
+
+# ノードの詳細情報を確認
+kubectl get nodes -o wide

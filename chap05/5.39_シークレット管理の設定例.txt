@@ -1,0 +1,16 @@
+# 5.39 シークレット管理の設定例
+# 『コンテナセキュリティ』サンプルコード
+
+# 機密情報をファイルに保存
+echo "my_secret_password" > /secure/secrets/db_password
+chmod 600 /secure/secrets/db_password
+docker run \
+  --volume /secure/secrets:/secrets:ro \
+  --env DB_PASSWORD_FILE=/secrets/db_password \
+  mysql
+
+# APIキーの例
+docker run \
+  --volume /secure/api_key.txt:/run/secrets/api_key:ro \
+  --tmpfs /tmp:noexec,nosuid,size=100m \
+  webapp

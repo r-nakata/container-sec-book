@@ -1,0 +1,16 @@
+# 5.08 プライベートレジストリの利用
+# 『コンテナセキュリティ』サンプルコード
+
+# プライベートレジストリにログイン
+docker login registry.local:5000
+# Username: admin
+# Password: password123
+
+# イメージにタグを付与
+docker tag myapp:latest registry.local:5000/myapp:v1.0
+
+# プライベートレジストリにプッシュ
+docker push registry.local:5000/myapp:v1.0
+
+# 他の環境からプル
+docker pull registry.local:5000/myapp:v1.0

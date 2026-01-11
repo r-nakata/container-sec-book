@@ -1,0 +1,11 @@
+# 6.04 リソースの詳細情報の確認
+# 『コンテナセキュリティ』サンプルコード
+
+# Podの詳細情報を表示（イベント履歴、エラー情報を含む）
+kubectl describe pod nginx-deployment-7d64c5f5b-xk9zm
+
+# Deployment の詳細情報を表示
+kubectl describe deployment nginx-deployment
+
+# Serviceの詳細情報を表示
+kubectl describe service nginx-service

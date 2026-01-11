@@ -1,0 +1,12 @@
+# 8.12 名前空間内でポッドの読み取り権限を定義するRole
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: production
+  name: pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]

@@ -1,0 +1,29 @@
+# 6.13 その他の便利なコマンド
+# 『コンテナセキュリティ』サンプルコード
+
+# すべてのリソースタイプを確認
+kubectl api-resources
+
+# kubectl コマンドのヘルプを表示
+kubectl help
+
+# 特定のコマンドのヘルプを表示
+kubectl get --help
+
+# コマンドの実行結果をYAML形式で出力
+kubectl get pod nginx-deployment-7d64c5f5b-xk9zm -o yaml
+
+# JSON形式で出力
+kubectl get pod nginx-deployment-7d64c5f5b-xk9zm -o json
+
+# 特定のフィールドのみを抽出（JSONPathを使用）
+kubectl get pods -o jsonpath='{.items[*].metadata.name}'
+
+# カスタムカラムで表示
+kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
+
+# ラベルを表示
+kubectl get pods --show-labels
+
+# 特定のラベルでフィルタリング
+kubectl get pods -l app=nginx

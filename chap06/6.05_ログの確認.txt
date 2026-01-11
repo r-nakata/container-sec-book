@@ -1,0 +1,17 @@
+# 6.05 ログの確認
+# 『コンテナセキュリティ』サンプルコード
+
+# Podのログを表示
+kubectl logs nginx-deployment-7d64c5f5b-xk9zm
+
+# ログをリアルタイムで追跡
+kubectl logs -f nginx-deployment-7d64c5f5b-xk9zm
+
+# 直近100行のログを表示
+kubectl logs --tail=100 nginx-deployment-7d64c5f5b-xk9zm
+
+# 複数コンテナを含むPodの特定コンテナのログを表示
+kubectl logs nginx-deployment-7d64c5f5b-xk9zm -c nginx
+
+# 過去のコンテナのログを表示（再起動した場合）
+kubectl logs nginx-deployment-7d64c5f5b-xk9zm --previous

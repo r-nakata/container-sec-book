@@ -1,0 +1,12 @@
+# 3.21 Wiresharkの活用例
+# 『コンテナセキュリティ』サンプルコード
+
+# tcpdumpファイルをローカルにコピー
+docker cp web-container:/tmp/capture.pcap ./capture.pcap
+
+# Wiresharkでファイルを開く
+wireshark capture.pcap
+
+# コマンドラインでの統計情報表示
+tshark -r capture.pcap -z conv,tcp
+tshark -r capture.pcap -z http,stat

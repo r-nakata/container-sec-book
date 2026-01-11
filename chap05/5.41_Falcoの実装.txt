@@ -1,0 +1,21 @@
+# 5.41 Falcoの実装
+# 『コンテナセキュリティ』サンプルコード
+
+# Falcoのインストール
+curl -s https://falco.org/repo/falcosecurity-3672BA8F.asc | apt-key add -
+echo "deb https://download.falco.org/packages/deb stable main" | tee -a /etc/apt/sources.list.d/falcosecurity.list
+apt-get update && apt-get install -y falco
+
+# カスタムルールの作成 (/etc/falco/rules.d/custom_rules.yaml)
+- rule: Container Shell Access
+  desc: Detect shell spawned in container
+  condition: >
+    spawned_process and container and
+    (proc.name = bash or proc.name = sh)
+  output: Shell spawned in container (user=%user.name container=%container.name shell=%proc.name)
+  priority: CRITICAL
+
+# Falcoサービスの開始と状態確認
+systemctl enable falco
+systemctl start falco
+systemctl status falco

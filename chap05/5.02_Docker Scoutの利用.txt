@@ -1,0 +1,8 @@
+# 5.02 Docker Scoutの利用
+# 『コンテナセキュリティ』サンプルコード
+
+# Docker Scoutによる基本スキャン
+docker scout cves myapp:latest
+
+# 推奨事項の表示
+docker scout recommendations myapp:latest

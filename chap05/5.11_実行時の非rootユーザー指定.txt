@@ -1,0 +1,8 @@
+# 5.11 実行時の非rootユーザー指定
+# 『コンテナセキュリティ』サンプルコード
+
+# 実行時にユーザーIDとグループIDを指定
+docker run --user 1000:1000 myapp
+
+# 権限昇格の防止
+docker run --security-opt=no-new-privileges myapp

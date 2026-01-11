@@ -1,0 +1,12 @@
+# 6.06 コマンドラインからDeploymentを作成
+# 『コンテナセキュリティ』サンプルコード
+
+# Nginxをデプロイ（コマンドで直接作成）
+kubectl create deployment nginx --image=nginx:latest
+
+# レプリカ数を3に設定
+kubectl scale deployment nginx --replicas=3
+
+# デプロイ状況を確認
+kubectl get deployments
+kubectl get pods

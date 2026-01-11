@@ -1,0 +1,17 @@
+# 3.11 アプリケーション側での実装（Node.jsでの例）
+# 『コンテナセキュリティ』サンプルコード
+
+logLevel = process.env.LOG_LEVEL || 'info';
+const levels = { error: 0, warn: 1, info: 2, debug: 3 };
+
+function log(level, message) {
+    if (levels[level] <= levels[logLevel]) {
+        console.log(`[${level.toUpperCase()}] ${message}`);
+    }
+}
+
+// 使用例
+log('error', 'Database connection failed');
+log('warn', 'High memory usage detected');
+log('info', 'User authenticated successfully');
+log('debug', 'Query executed in 45ms');  // LOG_LEVEL=debug時のみ出力

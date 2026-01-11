@@ -1,0 +1,10 @@
+# 5.29 カスタムブリッジネットワークの利用
+# 『コンテナセキュリティ』サンプルコード
+
+# アプリケーション別ネットワーク作成
+docker network create --driver bridge web-network
+docker network create --driver bridge db-network
+
+# 適切な分離
+docker run --network=web-network nginx
+docker run --network=db-network mysql

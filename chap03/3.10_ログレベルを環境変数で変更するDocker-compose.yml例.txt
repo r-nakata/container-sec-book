@@ -1,0 +1,10 @@
+# 3.10 ログレベルを環境変数で変更するDocker-compose.yml例
+# 『コンテナセキュリティ』サンプルコード
+
+services:
+  web:
+    image: my-app:latest
+    environment:
+      - LOG_LEVEL=info    # 通常時
+    ports:
+      - "8080:80"

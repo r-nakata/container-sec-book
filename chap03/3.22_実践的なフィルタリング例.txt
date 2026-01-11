@@ -1,0 +1,14 @@
+# 3.22 実践的なフィルタリング例
+# 『コンテナセキュリティ』サンプルコード
+
+# データベース接続の問題調査
+docker exec -it app-container tcpdump -i eth0 host db-container and port 5432
+
+# DNS解決の問題調査
+docker exec -it web-container tcpdump -i eth0 port 53
+
+# 特定IPアドレスとの通信のみ
+docker exec -it web-container tcpdump -i eth0 host 192.168.1.100
+
+# エラーレスポンスのHTTP通信
+docker exec -it web-container tcpdump -i eth0 -A 'tcp port 80 and (tcp[13] & 0x18 != 0)'

@@ -1,0 +1,23 @@
+# 5.37 ネットワークトラフィック暗号化の設定例
+# 『コンテナセキュリティ』サンプルコード
+
+# 暗号化通信用のネットワークを作成
+docker network create --driver bridge \
+  --subnet=172.20.0.0/24 \
+  --gateway=172.20.0.1 \
+  secure-network
+
+# TLS対応サーバーの起動
+docker run --name secure-server \
+  --network=secure-network \
+  -v /etc/ssl/certs:/certs:ro \
+  -e SSL_CERT=/certs/server.crt \
+  -e SSL_KEY=/certs/server.key \
+  nginx-with-tls
+
+# TLSクライアントの起動
+docker run --name secure-client \
+  --network=secure-network \
+  -v /etc/ssl/certs:/certs:ro \
+  --link secure-server:api \
+  webapp-client

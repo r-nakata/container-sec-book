@@ -1,0 +1,4 @@
+# 2.04 テストイメージの実行
+# 『コンテナセキュリティ』サンプルコード
+
+sudo docker run hello-world

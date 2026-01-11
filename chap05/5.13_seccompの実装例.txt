@@ -1,0 +1,25 @@
+# 5.13 seccompの実装例
+# 『コンテナセキュリティ』サンプルコード
+
+# カスタムseccompプロファイルの適用
+docker run --security-opt seccomp=/path/to/seccomp/profile.json nginx
+
+#seccompプロファイルの内容
+{
+    "defaultAction": "SCMP_ACT_ERRNO",  // デフォルトでは全システムコールを拒否
+    "architectures": [
+        "SCMP_ARCH_X86_64"  // 対象アーキテクチャを指定
+    ],
+    "syscalls": [
+        {
+            "names": [
+                "accept",   // ネットワーク接続の受け入れ
+                "bind",     // ソケットのバインド
+                "listen",   // 接続待ち受け
+                "read",     // ファイル読み取り
+                "write"     // ファイル書き込み
+            ],
+            "action": "SCMP_ACT_ALLOW"  // これらのシステムコールのみを許可
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+# 5.23 プロセス数制限
+# 『コンテナセキュリティ』サンプルコード
+
+# 作成可能なプロセス数を100個に制限
+docker run --pids-limit=100 myapp
+
+# システム全体のプロセス数制限を確認
+cat /proc/sys/kernel/pid_max

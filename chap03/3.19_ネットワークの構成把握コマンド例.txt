@@ -1,0 +1,26 @@
+# 3.19 ネットワークの構成把握コマンド例
+# 『コンテナセキュリティ』サンプルコード
+
+# Dockerネットワーク確認
+docker network ls
+docker network inspect <ネットワーク名>
+
+# コンテナネットワーク状況確認
+docker ps --format "table {{.Names}}\t{{.Ports}}\t{{.Networks}}"
+docker port <コンテナ名>
+
+# DNS設定確認
+docker exec -it <コンテナ名> cat /etc/resolv.conf
+docker exec -it <コンテナ名> cat /etc/hosts
+docker exec -it <コンテナ名> nslookup <ホスト名>
+docker exec -it <コンテナ名> dig <ホスト名>
+
+# ポート使用状況確認
+netstat -tlnp | grep :<ポート番号>
+ss -tlnp | grep :<ポート番号>
+lsof -i :<ポート番号>
+
+# Docker Compose関連
+docker compose ps
+docker compose config --services
+docker compose logs <サービス名>

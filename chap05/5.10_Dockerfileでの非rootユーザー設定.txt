@@ -1,0 +1,12 @@
+# 5.10 Dockerfileでの非rootユーザー設定
+# 『コンテナセキュリティ』サンプルコード
+
+# システムユーザーとグループの作成
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+
+# 作業ディレクトリの所有者を変更
+WORKDIR /app
+RUN chown -R appuser:appgroup /app
+
+# 非rootユーザーに切り替え
+USER appuser

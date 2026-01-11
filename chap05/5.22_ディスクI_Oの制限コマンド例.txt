@@ -1,0 +1,10 @@
+# 5.22 ディスクI/Oの制限コマンド例
+# 『コンテナセキュリティ』サンプルコード
+
+# デバイスの読み書き速度を制限
+docker run --device-read-bps /dev/sda:1mb \
+           --device-write-bps /dev/sda:1mb nginx
+
+# IOPSの制限を設定
+docker run --device-read-iops /dev/sda:100 \
+           --device-write-iops /dev/sda:100 nginx

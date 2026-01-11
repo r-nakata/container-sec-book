@@ -1,0 +1,15 @@
+# 6.12 リソース使用状況の確認
+# 『コンテナセキュリティ』サンプルコード
+
+# ノードのリソース使用状況を表示（メトリクスサーバーが必要）
+kubectl top nodes
+
+# Podのリソース使用状況を表示
+kubectl top pods
+
+# 特定のネームスペースのPodのリソース使用状況
+kubectl top pods -n kube-system
+
+# リソース使用量でソート
+kubectl top pods --sort-by=cpu
+kubectl top pods --sort-by=memory

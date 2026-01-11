@@ -1,0 +1,14 @@
+# 3.18 コンテナ内からの接続確認例
+# 『コンテナセキュリティ』サンプルコード
+
+#ホストや別のコンテナ等への接続性確認
+docker exec -it <コンテナ名> ping <ターゲット>
+docker exec -it <コンテナ名> telnet <ホスト> <ポート>
+docker exec -it <コンテナ名> nc -zv <ホスト> <ポート>
+docker exec -it <コンテナ名> curl -I <URL>
+
+# コンテナ内ネットワーク状況確認
+docker exec -it <コンテナ名> ip addr show
+docker exec -it <コンテナ名> ifconfig
+docker exec -it <コンテナ名> ip route
+docker exec -it <コンテナ名> route -n

@@ -1,0 +1,5 @@
+# 5.21 メモリ予約とソフト制限
+# 『コンテナセキュリティ』サンプルコード
+
+# メモリ予約（保証されるメモリ量）
+docker run --memory=1g --memory-reservation=512m myapp

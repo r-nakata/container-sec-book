@@ -1,0 +1,6 @@
+# 5.18 相対重みによるCPU制限
+# 『コンテナセキュリティ』サンプルコード
+
+# CPU使用の相対重みを設定（デフォルトは1024）
+docker run --cpu-shares=512 myapp    # 通常の半分の優先度
+docker run --cpu-shares=2048 myapp   # 通常の2倍の優先度

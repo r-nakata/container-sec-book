@@ -1,0 +1,17 @@
+# 6.02 リソースの一覧表示
+# 『コンテナセキュリティ』サンプルコード
+
+# すべてのPodを表示
+kubectl get pods
+
+# すべてのネームスペースのPodを表示
+kubectl get pods --all-namespaces
+
+# Pod の詳細情報を表示
+kubectl get pods -o wide
+
+# 特定のネームスペースのリソースを表示
+kubectl get pods -n kube-system
+
+# 主要なリソースをまとめて表示
+kubectl get all

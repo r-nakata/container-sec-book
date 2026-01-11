@@ -1,0 +1,6 @@
+# 4.01 OCIイメージの作成のためのDockerfile例
+# 『コンテナセキュリティ』サンプルコード
+
+FROM alpine:3.14                    # ベースイメージの指定
+COPY app /usr/local/bin/            # アプリケーションファイルのコピー
+ENTRYPOINT ["/usr/local/bin/app"]   # 起動時に実行するコマンド

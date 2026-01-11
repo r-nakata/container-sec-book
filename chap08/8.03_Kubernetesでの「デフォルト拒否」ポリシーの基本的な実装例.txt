@@ -1,0 +1,13 @@
+# 8.03 Kubernetesでの「デフォルト拒否」ポリシーの基本的な実装例
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: production
+spec:
+  podSelector: {}  # 空のセレクターは名前空間内の全てのポッドを選択
+  policyTypes:
+  - Ingress
+  - Egress

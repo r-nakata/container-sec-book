@@ -1,0 +1,15 @@
+# 5.16 最小権限設定の統合
+# 『コンテナセキュリティ』サンプルコード
+
+docker run \
+  --user=1000:1000 \
+  --cap-drop=ALL \
+  --cap-add=NET_BIND_SERVICE \
+  --security-opt=no-new-privileges \
+  --security-opt=seccomp=default \
+  --security-opt=apparmor=docker-default \
+  --read-only \
+  --tmpfs /tmp:size=100m,noexec,nosuid \
+  --memory=512m \
+  --cpus="0.5" \
+  myapp:latest

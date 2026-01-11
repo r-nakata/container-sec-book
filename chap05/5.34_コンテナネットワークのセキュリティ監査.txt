@@ -1,0 +1,15 @@
+# 5.34 コンテナネットワークのセキュリティ監査
+# 『コンテナセキュリティ』サンプルコード
+
+# 現在のネットワーク設定の確認
+docker network ls
+docker network inspect <network_name>
+
+# ICCの設定確認
+docker network inspect bridge | grep enable_icc
+
+# 暗号化の確認(overlay)
+docker network inspect <overlay_network> | grep encrypted
+
+# コンテナのネットワーク接続状態の確認
+docker inspect <container> --format='{{.NetworkSettings.Networks}}'

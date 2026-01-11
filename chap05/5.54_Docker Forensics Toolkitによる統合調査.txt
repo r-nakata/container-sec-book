@@ -1,0 +1,54 @@
+# 5.54 Docker Forensics Toolkitによる統合調査
+# 『コンテナセキュリティ』サンプルコード
+
+# Docker Forensics環境の構築
+git clone https://github.com/docker-forensics-toolkit/dft.git
+cd dft && pip install -r requirements.txt
+
+# コンテナイメージの詳細分析
+python dft.py image-analysis --image suspicious_image:latest --output image_analysis_report.json
+
+# レイヤー構造の調査
+python dft.py layer-analysis --image suspicious_image:latest --extract-layers ./extracted_layers/
+
+# コンテナ実行履歴の調査
+python dft.py container-history --container-id abc123def456 --output container_history.json
+
+# Dockerfileの復元
+python dft.py dockerfile-recovery --image suspicious_image:latest --output recovered_dockerfile
+
+# レジストリ通信の分析
+python dft.py registry-analysis --logs /var/log/docker.log --output registry_activity.json
+
+# 包括的なフォレンジックレポート生成
+python dft.py generate-report --case-id CONTAINER-FORENSIC-001 --evidence-dir ./evidence/ --output comprehensive_report.html
+
+# コンテナ特有の証拠収集スクリプト
+cat > container_evidence_collection.sh << 'EOF'
+#!/bin/bash
+CASE_ID="CONTAINER-FORENSIC-$(date +%Y%m%d_%H%M%S)"
+EVIDENCE_DIR="./evidence/${CASE_ID}"
+
+mkdir -p ${EVIDENCE_DIR}
+
+# コンテナ状態の保存
+docker ps -a > ${EVIDENCE_DIR}/container_status.txt
+docker images > ${EVIDENCE_DIR}/image_list.txt
+docker network ls > ${EVIDENCE_DIR}/network_list.txt
+
+# コンテナメタデータの収集
+for container in $(docker ps -q); do
+    docker inspect ${container} > ${EVIDENCE_DIR}/inspect_${container}.json
+    docker logs ${container} > ${EVIDENCE_DIR}/logs_${container}.txt
+    docker export ${container} > ${EVIDENCE_DIR}/filesystem_${container}.tar
+done
+
+# ホスト証拠の収集
+cp /var/log/docker.log ${EVIDENCE_DIR}/
+tar -czf ${EVIDENCE_DIR}/docker_data.tar.gz /var/lib/docker/
+
+echo "証拠収集完了: ${EVIDENCE_DIR}"
+EOF
+
+chmod +x container_evidence_collection.sh
+./container_evidence_collection.sh

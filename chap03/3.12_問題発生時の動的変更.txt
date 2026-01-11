@@ -1,0 +1,12 @@
+# 3.12 問題発生時の動的変更
+# 『コンテナセキュリティ』サンプルコード
+
+# デバッグレベルに変更して再起動
+docker compose down
+LOG_LEVEL=debug docker compose up -d
+
+# ログ確認
+docker compose logs -f web
+
+# 調査完了後、元に戻す
+LOG_LEVEL=info docker compose up -d

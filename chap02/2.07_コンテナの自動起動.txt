@@ -1,0 +1,8 @@
+# 2.07 コンテナの自動起動
+# 『コンテナセキュリティ』サンプルコード
+
+# コンテナの自動起動設定
+docker run -d --restart=always nginx
+
+# 既存コンテナの再起動ポリシー変更
+docker update --restart=always container_name

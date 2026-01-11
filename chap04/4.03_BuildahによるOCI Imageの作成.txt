@@ -1,0 +1,11 @@
+# 4.03 BuildahによるOCI Imageの作成
+# 『コンテナセキュリティ』サンプルコード
+
+# Buildahによるイメージ作成
+buildah from alpine:3.14                              # ベースイメージから開始
+buildah copy container /path/to/app /usr/local/bin/   # ファイルのコピー
+buildah config --entrypoint ["/usr/local/bin/app"] container  # 設定
+buildah commit container myapp:1.0                    # イメージの確定
+
+# Skopeoを使用したOCI形式への変換
+skopeo copy docker://myapp:1.0 oci:myapp:1.0

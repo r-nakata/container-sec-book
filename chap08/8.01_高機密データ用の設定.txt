@@ -1,0 +1,12 @@
+# 8.01 高機密データ用の設定
+# 『コンテナセキュリティ』サンプルコード
+
+# 機密データ処理用ノードにテイントを設定
+kubectl taint nodes node1 security=high:NoSchedule
+
+# 機密データ処理用ポッドにトレレーションを設定
+tolerations:
+- key: "security"
+  operator: "Equal"
+  value: "high"
+  effect: "NoSchedule"

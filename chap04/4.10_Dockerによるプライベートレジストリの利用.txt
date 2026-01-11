@@ -1,0 +1,12 @@
+# 4.10 Dockerによるプライベートレジストリの利用
+# 『コンテナセキュリティ』サンプルコード
+
+# Docker Registryの起動
+docker run -d -p 5000:5000 --name registry registry:2
+
+# ローカルレジストリへのイメージ公開
+docker tag myapp:latest localhost:5000/myapp:latest
+docker push localhost:5000/myapp:latest
+
+# ローカルレジストリからのイメージ取得
+docker pull localhost:5000/myapp:latest

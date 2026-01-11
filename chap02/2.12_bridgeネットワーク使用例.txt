@@ -1,0 +1,20 @@
+# 2.12 bridgeネットワーク使用例
+# 『コンテナセキュリティ』サンプルコード
+
+# デフォルトbridgeネットワークの確認
+docker network inspect bridge
+
+# カスタムbridgeネットワークの作成（推奨）
+docker network create my-app-network
+
+# IPアドレス範囲を指定して作成
+docker network create \
+  --driver bridge \
+  --subnet=172.20.0.0/16 \
+  --ip-range=172.20.240.0/20 \
+  --gateway=172.20.0.1 \
+  my-custom-network
+
+# ネットワークを指定してコンテナ起動
+docker run -d --name web --network my-app-network nginx
+docker run -d --name db --network my-app-network mysql:5.7

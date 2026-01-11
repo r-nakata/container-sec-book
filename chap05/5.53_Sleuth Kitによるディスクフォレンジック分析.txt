@@ -1,0 +1,34 @@
+# 5.53 Sleuth Kitによるディスクフォレンジック分析
+# 『コンテナセキュリティ』サンプルコード
+
+# コンテナファイルシステムのイメージ作成
+dd if=/dev/sda1 of=host_filesystem.img bs=4096
+
+# Sleuth Kitツールによる分析
+# ファイルシステム情報の取得
+fsstat host_filesystem.img > filesystem_info.txt
+
+# コンテナ関連ファイルの調査
+fls -r host_filesystem.img | grep -E "(docker|container)" > container_files.txt
+
+# 削除されたファイルの復元
+fls -rd host_filesystem.img | grep "docker" > deleted_docker_files.txt
+
+# タイムライン分析（bodyファイル生成）
+fls -m / -r host_filesystem.img > timeline_body.txt
+mactime -b timeline_body.txt -d > timeline_analysis.txt
+
+# 特定ディレクトリの詳細調査（Dockerデータディレクトリ）
+fls -l host_filesystem.img | grep "/var/lib/docker"
+
+# Autopsyを使用したGUI分析環境
+docker run -d --name autopsy -p 9999:9999 -v $(pwd)/evidence:/cases sleuthkit/autopsy
+
+# inode分析による詳細調査
+istat host_filesystem.img 12345 > inode_analysis.txt
+
+# ファイル内容の抽出
+icat host_filesystem.img 12345 > extracted_file.bin
+
+# 文字列検索
+strings extracted_file.bin | grep -E "(password|secret|key)" > sensitive_strings.txt

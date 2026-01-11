@@ -1,0 +1,11 @@
+# 8.19 IstioでのmTLS設定（Strict モード）
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: production
+spec:
+  mtls:
+    mode: STRICT

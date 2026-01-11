@@ -1,0 +1,56 @@
+# 5.52 osqueryによるコンテナ環境調査
+# 『コンテナセキュリティ』サンプルコード
+
+# osqueryの対話型調査開始
+osqueryi
+
+# コンテナの状態調査
+osqueryi --json "SELECT * FROM docker_containers;" > container_status.json
+osqueryi --json "SELECT * FROM docker_images;" > image_inventory.json
+osqueryi --json "SELECT * FROM docker_networks;" > network_config.json
+
+# 疑わしいプロセスの調査
+osqueryi --json "
+SELECT 
+  pid, name, cmdline, cwd, start_time 
+FROM processes 
+WHERE 
+  name LIKE '%docker%' OR 
+  cmdline LIKE '%container%' OR 
+  parent IN (SELECT pid FROM processes WHERE name = 'dockerd')
+ORDER BY start_time DESC;" > docker_processes.json
+
+# ファイルシステム変更の調査
+osqueryi --json "
+SELECT 
+  target_path, action, time, source_path 
+FROM file_events 
+WHERE 
+  target_path LIKE '/var/lib/docker%' AND 
+  time > (strftime('%s', 'now') - 3600);" > filesystem_changes.json
+
+# ネットワーク接続の詳細調査
+osqueryi --json "
+SELECT 
+  pid, fd, socket, family, protocol, local_address, remote_address, state
+FROM process_open_sockets 
+WHERE 
+  pid IN (SELECT pid FROM processes WHERE cmdline LIKE '%container%');" > network_connections.json
+
+# 継続監視用のクエリパック設定
+cat > container_forensics.conf << 'EOF'
+{
+  "queries": {
+    "container_events": {
+      "query": "SELECT * FROM docker_container_events;",
+      "interval": 60,
+      "description": "Monitor container lifecycle events"
+    },
+    "suspicious_processes": {
+      "query": "SELECT pid, name, cmdline FROM processes WHERE name LIKE '%sh' OR name LIKE '%bash';",
+      "interval": 300,
+      "description": "Track shell access to containers"
+    }
+  }
+}
+EOF

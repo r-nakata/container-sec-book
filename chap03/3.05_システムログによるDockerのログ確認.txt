@@ -1,0 +1,12 @@
+# 3.05 システムログによるDockerのログ確認
+# 『コンテナセキュリティ』サンプルコード
+
+# 特定のサービスのログを確認
+docker compose logs web
+docker compose logs database
+
+# 全サービスのログを時系列で確認
+docker compose logs --follow
+
+# 特定のサービスの最新ログのみ
+docker compose logs --tail 50 web

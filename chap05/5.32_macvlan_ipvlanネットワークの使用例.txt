@@ -1,0 +1,17 @@
+# 5.32 macvlan/ipvlanネットワークの使用例
+# 『コンテナセキュリティ』サンプルコード
+
+# VLAN分離を使用したmacvlanネットワーク
+docker network create -d macvlan \
+  --subnet=192.168.10.0/24 \
+  --gateway=192.168.10.1 \
+  -o parent=eth0.10 \
+  secure_macvlan
+
+# IPアドレス範囲を制限
+docker network create -d ipvlan \
+  --subnet=192.168.100.0/24 \
+  --ip-range=192.168.100.128/25 \
+  -o parent=eth0 \
+  -o ipvlan_mode=l3 \
+  restricted_ipvlan

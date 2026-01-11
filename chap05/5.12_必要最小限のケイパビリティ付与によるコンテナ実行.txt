@@ -1,0 +1,12 @@
+# 5.12 必要最小限のケイパビリティ付与によるコンテナ実行
+# 『コンテナセキュリティ』サンプルコード
+
+# 基本的なCapability制御
+docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE myapp
+
+# 複数のCapabilityを選択的に付与
+docker run \
+  --cap-drop=ALL \
+  --cap-add=NET_BIND_SERVICE --cap-add=CHOWN \
+  --cap-add=SETUID --cap-add=SETGID \
+  nginx

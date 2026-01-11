@@ -1,0 +1,14 @@
+# 3.23 tcpdumpとWiresharkを組み合わせた問題特定手順
+# 『コンテナセキュリティ』サンプルコード
+
+# 1. 問題発生時のキャプチャ開始
+docker exec -d web-container tcpdump -i eth0 -w /tmp/debug.pcap
+
+# 2. 問題を再現
+
+# 3. キャプチャ停止とファイル取得
+docker exec web-container pkill tcpdump
+docker cp web-container:/tmp/debug.pcap ./
+
+# 4. Wiresharkで詳細分析
+wireshark debug.pcap

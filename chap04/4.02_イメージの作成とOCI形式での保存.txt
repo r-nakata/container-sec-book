@@ -1,0 +1,5 @@
+# 4.02 イメージの作成とOCI形式での保存
+# 『コンテナセキュリティ』サンプルコード
+
+docker build -t myapp:1.0 .        # Dockerfileからイメージ作成
+docker save myapp:1.0 -o myapp.tar # OCI形式のtarファイルとして保存

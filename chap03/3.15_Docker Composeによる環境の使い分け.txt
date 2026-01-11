@@ -1,0 +1,33 @@
+# 3.15 Docker Composeによる環境の使い分け
+# 『コンテナセキュリティ』サンプルコード
+
+# docker-compose.yml
+version: '3.9'
+
+services:
+  # 本番用サービス
+  web:
+    image: my-app:prod
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+    ports:
+      - "8080:3000"
+
+  # デバッグ用サービス（プロファイルで管理）
+  web-debug:
+    image: my-app:debug
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+      - DEBUG=*
+    ports:
+      - "8081:3000"
+      - "9229:9229"    # Node.js デバッガー用
+    volumes:
+      - ./logs:/app/logs
+      - ./debug:/app/debug
+    profiles:
+      - debug
+    # 特権モードでシステムレベルのデバッグを可能に
+    privileged: true

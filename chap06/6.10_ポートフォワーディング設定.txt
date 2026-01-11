@@ -1,0 +1,11 @@
+# 6.10 ポートフォワーディング設定
+# 『コンテナセキュリティ』サンプルコード
+
+# ローカルの8080ポートをPodの80ポートに転送
+kubectl port-forward pod/nginx-deployment-7d64c5f5b-xk9zm 8080:80
+
+# Serviceに対してポートフォワーディング
+kubectl port-forward service/nginx-service 8080:80
+
+# Deploymentに対してポートフォワーディング
+kubectl port-forward deployment/nginx-deployment 8080:80

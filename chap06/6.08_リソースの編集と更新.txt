@@ -1,0 +1,20 @@
+# 6.08 リソースの編集と更新
+# 『コンテナセキュリティ』サンプルコード
+
+# Deploymentを直接編集（デフォルトエディタが開く）
+kubectl edit deployment nginx-deployment
+
+# レプリカ数を変更
+kubectl scale deployment nginx-deployment --replicas=5
+
+# イメージを更新（ローリングアップデート）
+kubectl set image deployment/nginx-deployment nginx=nginx:1.25
+
+# ローリングアップデートの状態を確認
+kubectl rollout status deployment/nginx-deployment
+
+# デプロイの履歴を確認
+kubectl rollout history deployment/nginx-deployment
+
+# 前のバージョンにロールバック
+kubectl rollout undo deployment/nginx-deployment

@@ -1,0 +1,8 @@
+# 5.05 Cosignの利用
+# 『コンテナセキュリティ』サンプルコード
+
+# Cosignでイメージに署名
+cosign sign myregistry/myapp:v1.0
+
+# 署名の検証
+cosign verify myregistry/myapp:v1.0 --key cosign.pub

@@ -1,0 +1,65 @@
+# 3.07 ELK Stackのdocker-compose.yaml例
+# 『コンテナセキュリティ』サンプルコード
+
+version: '3.8'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true      # メモリスワップの防止
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    networks:
+      - elk-net
+    restart: unless-stopped
+    platform: linux/amd64
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.0
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+    environment:
+      - LS_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "5044:5044"    # Beats入力用
+      - "12201:12201"  # GELF入力用
+    networks:
+      - elk-net
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+    platform: linux/amd64
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - elk-net
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+    platform: linux/amd64
+
+networks:
+  elk-net:
+    driver: bridge
+
+volumes:
+  es-data:
+    driver: local

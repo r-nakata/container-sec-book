@@ -1,0 +1,15 @@
+# 4.07 イメージの公開
+# 『コンテナセキュリティ』サンプルコード
+
+# 単一イメージの公開
+docker push myusername/myapp:latest
+
+# 特定タグの公開
+docker push myusername/myapp:1.0
+
+# 全タグの公開
+docker push --all-tags myusername/myapp
+
+# 公開進捗の確認
+# The push refers to repository [docker.io/myusername/myapp]
+# latest: digest: sha256:abc123... size: 1234

@@ -1,0 +1,20 @@
+# 8.21 Istioでの認可ポリシー
+# 『コンテナセキュリティ』サンプルコード
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: user-service-policy
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/production/sa/frontend"]
+    to:
+    - operation:
+        methods: ["GET"]
+        paths: ["/api/users/*"]
