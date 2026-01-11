@@ -1,4 +1,4 @@
-# 7.02 .github/workflows/deploy.yml
+# 7.05 .github/workflows/deploy.yml
 # 『コンテナセキュリティ』サンプルコード
 
 name: ビルドとデプロイ
